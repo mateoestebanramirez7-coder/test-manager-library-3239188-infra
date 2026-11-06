@@ -1,50 +1,40 @@
 # test-manager-library-3239188-infra
 
-> **Prueba técnica · Ficha ADSO 3239188**
-> Horario: **jueves 5 de noviembre de 2026, de 7:00 p. m. a 11:00 p. m.** (hora Colombia). Entrega a las **11:00 p. m.**
+Contenedores, red, volúmenes y motor de base de datos de *Manager Library*. Prueba técnica SDD · Ficha ADSO 3239188.
 
-Este repositorio es la **infraestructura** de *Manager Library*: contenedores, red, volúmenes y el motor de base de datos vacío. **Empieza vacío a propósito**: se construye en el fork de cada aprendiz.
+## Papel en el spec
 
-## Instrucciones
+Levanta el entorno con un solo comando (RNF-5, tarea T-20). Según el ADR-001 y el artículo V de la constitución, este repositorio crea **solo el motor vacío**: usuario, volumen y red. **No contiene ninguna sentencia de creación de tablas**; todo el esquema vive en las migraciones del repo `api`.
 
-Cada aprendiz debe **crear el fork** de los seis repositorios del proyecto y **resolver el proyecto
-con el spec planteado**.
+## Qué debe levantar
 
-1. Hacer fork, a su cuenta de GitHub, de cada repositorio de la tabla del final.
-2. Leer el spec en [`test-manager-library-3239188-docs`](https://github.com/code-sena/test-manager-library-3239188-docs).
-   Se entrega en dos versiones: `spec-python/` y `spec-.net/`.
-3. Desarrollar en los forks.
-
-## El reto se desarrolla con React y PHP (Laravel)
-
-El spec está escrito para Python y para .NET, pero el reto **no** se hace en esos lenguajes:
-
-| Capa | Tecnología del reto |
+| Servicio | Descripción |
 |---|---|
-| Frontend | React |
-| Backend | PHP con Laravel |
+| Base de datos | PostgreSQL 16, vacía, con volumen persistente |
+| API | Backend Laravel del repo `api` |
+| Frontend | App React del repo `app` |
 
-Lo que el spec define sobre el negocio —historias, criterios de aceptación, reglas, contrato de la
-API, modelo de datos— se respeta. Lo que define sobre la tecnología se traduce a React y Laravel.
+## Variables de entorno
 
-## La prueba no consiste en escribir el código
+| Variable | Obligatoria | Uso |
+|---|---|---|
+| `DATABASE_URL` | sí | Conexión de la API al motor |
+| `JWT_SECRET` | sí | Clave de firma del token (HS256, 8 horas) |
+| `ADMIN_USERNAME` / `ADMIN_PASSWORD` | sí | Administrador inicial que crea el arranque de la API |
+| `CORS_ORIGIN` | sí | Origen permitido del frontend |
+| `COVERS_DIR` | no | Carpeta de portadas |
 
-El propósito principal es ver la **capacidad de desempeño con SDD** (*Spec-Driven Development*,
-desarrollo guiado por especificación): cómo se lee, se interpreta y se aplica una especificación
-para llevarla a un stack distinto. El código es el medio, no el fin.
+Regla del artículo IX: el `.env` real nunca se versiona; solo se publica un `.env.example` con valores de ejemplo.
 
-## Entrega
+## Criterio de terminado (T-20)
 
-Cuenta lo que quede **subido a los forks antes de las 11:00 p. m.** Lo que llegue después no se revisa.
-No hay prórroga: suban avances parciales con commits pequeños durante la prueba.
+Un solo comando levanta motor, API y frontend, y la base arranca **sin tablas** hasta correr las migraciones.
 
-## Los seis repositorios
+## Estado
 
-| Repositorio | Qué va ahí |
+| Elemento | Estado |
 |---|---|
-| [`test-manager-library-3239188-docs`](https://github.com/code-sena/test-manager-library-3239188-docs) | El spec: `spec-python/` y `spec-.net/` |
-| [`test-manager-library-3239188-api`](https://github.com/code-sena/test-manager-library-3239188-api) | Backend en PHP (Laravel) |
-| [`test-manager-library-3239188-app`](https://github.com/code-sena/test-manager-library-3239188-app) | Frontend en React |
-| [`test-manager-library-3239188-page`](https://github.com/code-sena/test-manager-library-3239188-page) | Sitio público estático de presentación |
-| [`test-manager-library-3239188-infra`](https://github.com/code-sena/test-manager-library-3239188-infra) | Contenedores, red, volúmenes y motor de base de datos vacío |
-| [`test-manager-library-3239188-tool`](https://github.com/code-sena/test-manager-library-3239188-tool) | Utilidades: sembrador de datos de demostración |
+| Diseño y alcance | Hecho (este documento) |
+| Implementación de contenedores | Pendiente |
+
+> Este README describe el diseño previsto. No afirma que la implementación exista.
